@@ -5,6 +5,7 @@ import EmptyFavorites from "./empty-favorite";
 import EmptySearch from "./empty-search";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import BoardCard from "./boardcard";
 interface BoardListProps {
     orgId:string,
     query:{
