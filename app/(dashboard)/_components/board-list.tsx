@@ -1,5 +1,6 @@
 "use client"
 
+import EmptyBoards from "./empty-board";
 import EmptyFavorites from "./empty-favorite";
 import EmptySearch from "./empty-search";
 
@@ -34,7 +35,7 @@ export const BoardList = ({orgId,query}:BoardListProps) => {
     if(!data?.length){
         return(
             <div>
-                No miro
+                <EmptyBoards/>
             </div>
         )
     }
