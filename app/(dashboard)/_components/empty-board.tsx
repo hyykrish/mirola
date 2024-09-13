@@ -9,13 +9,13 @@ const EmptyBoards = () => {
         <div className='h-full flex flex-col items-center justify-center'>
             <Image src='/note.svg' height={110} width={110} alt='empty' />
 
-            <h2 className='text-2xl font-semibold mt-6'>Create your first Miro</h2>
+            <h2 className='text-2xl font-semibold mt-6'>Create your first Board</h2>
             <p className='text-muted-foreground text-sm mt-2'>
-                Start by creating a miro for your organization
+                Start by creating a board for your organization
             </p>
             <div className="mt-6">
                 <Button size="lg">
-                    Create Miro
+                    Create Board
                 </Button>
             </div>
         </div>
