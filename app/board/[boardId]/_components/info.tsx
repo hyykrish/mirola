@@ -4,6 +4,9 @@ export const Info = () => {
             Info
             ///temp
             ////temp
+            ///temp
+            /temp
+
         </div>
     )
 }
