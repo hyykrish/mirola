@@ -4,6 +4,7 @@ const BoardIdPage = () => {
     return (
         <div>
             <Canvas/>
+            //Feature Canvas start
         </div>
     )
 }
