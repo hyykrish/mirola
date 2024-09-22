@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^5.5.2",
+    "@liveblocks/client": "^2.7.2",
+    "@liveblocks/react": "^2.7.2",
     "@next/font": "^14.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.1",
