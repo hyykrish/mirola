@@ -2,7 +2,8 @@ import { createClient } from "@liveblocks/client";
 import { createRoomContext } from "@liveblocks/react";
 
 const client = createClient({
-  publicApiKey: "pk_prod_g2Jp-2E-9L81WV5ZzNDLRiOr8qBH0qRXOxuBE5tz4JphI50R6xHK4318ElrrOYk5"
+  throttle: 16,
+  authEndpoint: '/api/liveblocks-auth',
 });
 
 // Presence represents the properties that exist on every user in the Room
@@ -22,38 +23,78 @@ type Storage = {
   // ...
 };
 
-// Optionally, UserMeta represents static/readonly metadata on each user, as
-// provided by your own custom auth back end (if used). Useful for data that
-// will not change during a session, like a user's name or avatar.
-// type UserMeta = {
-//   id?: string,  // Accessible through `user.id`
-//   info?: Json,  // Accessible through `user.info`
-// };
+type UserMeta = {
+  id?: string // Accessible through `user.id`
+  info?: {
+    name?: string
+    picture?: string
+  } // Accessible through `user.info`
+}
 
 // Optionally, the type of custom events broadcast and listened to in this
 // room. Use a union for multiple events. Must be JSON-serializable.
-// type RoomEvent = {};
+type RoomEvent = {
+  // type: "NOTIFICATION",
+  // ...
+}
 
 // Optionally, when using Comments, ThreadMetadata represents metadata on
 // each thread. Can only contain booleans, strings, and numbers.
-// export type ThreadMetadata = {
-//   pinned: boolean;
-//   quote: string;
-//   time: number;
-// };
+export type ThreadMetadata = {
+  // resolved: boolean;
+  // quote: string;
+  // time: number;
+}
 
+// Room-level hooks, use inside `RoomProvider`
 export const {
-  RoomProvider,
-  useMyPresence,
-  useStorage,
+  suspense: {
+    RoomProvider,
+    useRoom,
+    useMyPresence,
+    useUpdateMyPresence,
+    useSelf,
+    useOthers,
+    useOthersMapped,
+    useOthersListener,
+    useOthersConnectionIds,
+    useOther,
+    useBroadcastEvent,
+    useEventListener,
+    useErrorListener,
+    useStorage,
+    useObject,
+    useMap,
+    useList,
+    useBatch,
+    useHistory,
+    useUndo,
+    useRedo,
+    useCanUndo,
+    useCanRedo,
+    useMutation,
+    useStatus,
+    useLostConnectionListener,
+    useThreads,
+    useCreateThread,
+    useEditThreadMetadata,
+    useCreateComment,
+    useEditComment,
+    useDeleteComment,
+    useAddReaction,
+    useRemoveReaction,
+    useThreadSubscription,
+    useMarkThreadAsRead,
+    useRoomNotificationSettings,
+    useUpdateRoomNotificationSettings,
 
-  // Other hooks
-  // ...
-} = createRoomContext<
-  Presence,
-  Storage
-  /* UserMeta, RoomEvent, ThreadMetadata */
->(client);
+    // These hooks can be exported from either context
+    // useUser,
+    // useRoomInfo
+  },
+} = createRoomContext<Presence, Storage, UserMeta, RoomEvent, ThreadMetadata>(
+  client,
+)
 
 
 
