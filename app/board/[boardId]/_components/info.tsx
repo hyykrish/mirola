@@ -47,7 +47,7 @@ const Info = ({ boardId }: InfoProps) => {
                                 font.className,
                             )}
                         >
-                            Boardy
+                            Mirola
                         </span>
                     </Link>
                 </Button>
