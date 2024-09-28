@@ -1,6 +1,7 @@
-import { Canvas } from "./_components/canvas"
+
 import { Room } from "@/components/room"
 import Loading from "./_components/loading"
+import { Canvas } from "./_components/canvas"
 interface BoardIdPageProps{
     params:{
         boardId:string
