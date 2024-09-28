@@ -1,44 +1,45 @@
-"use client";
+'use client'
 
-import { api } from "@/convex/_generated/api";
-import { useApiMutation } from "@/hooks/use-api-mutation";
+import { api } from '@/convex/_generated/api'
+import { useApiMutation } from '@/hooks/use-api-mutation'
 
-import { cn } from "@/lib/utils";
-import { Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
-import React from "react";
-import { toast } from "sonner";
+import { cn } from '@/lib/utils'
+import { Plus } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import React from 'react'
+import { toast } from 'sonner'
 
-const NewBoardButton = ({ orgId, disabled }:any) => {
-    const router = useRouter();
-    const { mutate, pending } = useApiMutation(api.board.create);
+const NewBoardButton = ({ orgId, disabled }: any) => {
+  const router = useRouter()
+  const { mutate, pending } = useApiMutation(api.board.create)
 
-    const handleClick = () => {
-        mutate({
-            orgId,
-            title: "Untitled",
-        })
-            .then((id) => {
-                toast.success("Board created");
-                router.push(`/board/${id}`);
-            })
-            .catch((err) => toast.error("Failed to create board"));
-    };
+  const handleClick = () => {
+    mutate({
+      orgId,
+      title: 'Untitled',
+    })
+      .then((id) => {
+        toast.success('Board created')
+        router.push(`/board/${id}`)
+      })
+      .catch((err) => toast.error('Failed to create board'))
+  }
 
-    return (
-        <button
-            disabled={disabled || pending}
-            onClick={handleClick}
-            className={cn(
-                "col-span-1 aspect-[100/127] bg-blue-600 rounded-lg hover:bg-blue-800 flex flex-col items-center justify-center py-6 transition",
-                (pending || disabled) && "opacity-75 hover:bg-blue-600 cursor-not-allowed"
-            )}
-        >
-            <div></div>
-            <Plus className='h-12 w-12 text-white stroke-1' />
-            <p className='text-sm text-white font-medium'>New board</p>
-        </button>
-    );
-};
+  return (
+    <button
+      disabled={disabled || pending}
+      onClick={handleClick}
+      className={cn(
+        'col-span-1 aspect-[100/127] bg-blue-600 rounded-lg hover:bg-blue-800 flex flex-col items-center justify-center py-6 transition',
+        (pending || disabled) &&
+          'opacity-75 hover:bg-blue-600 cursor-not-allowed',
+      )}
+    >
+      <div></div>
+      <Plus className="h-12 w-12 text-white stroke-1" />
+      <p className="text-sm text-white font-medium">New board</p>
+    </button>
+  )
+}
 
-export default NewBoardButton;
+export default NewBoardButton

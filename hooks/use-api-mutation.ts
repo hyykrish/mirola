@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import { useMutation } from "convex/react";
+import React, { useState } from 'react'
+import { useMutation } from 'convex/react'
 
-export const useApiMutation = (mutationFunction:any) => {
-    const [pending, setPending] = useState(false);
-    const apiMutation = useMutation(mutationFunction);
+export const useApiMutation = (mutationFunction: any) => {
+  const [pending, setPending] = useState(false)
+  const apiMutation = useMutation(mutationFunction)
 
-    const mutate = (payload:any) => {
-        setPending(true);
-        return apiMutation(payload)
-            .finally(() => setPending(false))
-            .then((res) => {
-                return res;
-            })
-            .catch((err) => {
-                throw err;
-            });
-    };
+  const mutate = (payload: any) => {
+    setPending(true)
+    return apiMutation(payload)
+      .finally(() => setPending(false))
+      .then((res) => {
+        return res
+      })
+      .catch((err) => {
+        throw err
+      })
+  }
 
-    return { mutate, pending };
-};
+  return { mutate, pending }
+}
