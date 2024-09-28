@@ -3,6 +3,9 @@ import { PointerEvent, memo } from "react";
 import {useStorage} from "@/liveblocks.config";
 import {LayerType} from "@/types/canvas";
 import Rectangle from "./rectangle";
+import Ellipse from "./ellipse";
+import Text from "./text";
+import Note from "./note";
 interface LayerPreviewProps {
     id: string;
     onLayerPointerDown: (e: PointerEvent, layerId: string) => void;
@@ -24,11 +27,26 @@ const LayerPreview = ({ id, onLayerPointerDown, selectionColor }:LayerPreviewPro
                 onPointerDown={onLayerPointerDown}
             />);
         case LayerType.Ellipse:
-            return <div>Ellipse</div>;
+            return (<Ellipse
+                id={id}
+                layer={layer}
+                selectionColor={selectionColor}
+                onPointerDown={onLayerPointerDown}
+            />);
         case LayerType.Text:
-            return <div>Text</div>;
+            return <Text
+                id={id}
+                layer={layer}
+                selectionColor={selectionColor}
+                onPointerDown={onLayerPointerDown}
+            />;
         case LayerType.Note:
-            return <div>Note</div>;
+            return <Note
+                id={id}
+                layer={layer}
+                selectionColor={selectionColor}
+                onPointerDown={onLayerPointerDown}
+            />;
         default:
             console.warn("Unknown layer type");
             return null;
