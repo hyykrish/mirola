@@ -6,8 +6,6 @@ import {
   useMemo,
   useState,
   WheelEvent,
-  useEffect,
-  KeyboardEvent,
 } from 'react'
 import { MAX_LAYERS, SELECTION_NET_THRESHOLD } from '@/constants'
 import { nanoid } from 'nanoid'
@@ -99,7 +97,14 @@ const Canvas = ({ boardId }: CanvasProps) => {
       })
 
       liveLayerIds.push(layerId)
-      liveLayers.set(layerId, layer as any)
+      liveLayers.set(layerId, layer as LiveObject<{
+        type: LayerType.Rectangle | LayerType.Ellipse | LayerType.Text | LayerType.Note;
+        x: number;
+        y: number;
+        height: number;
+        width: number;
+        fill: Color;
+      }>)
 
       setMyPresence({ selection: [layerId] }, { addToHistory: true })
       setCanvasState({ mode: CanvasMode.None })
@@ -161,8 +166,8 @@ const Canvas = ({ boardId }: CanvasProps) => {
         cursor: point,
         pencilDraft:
           pencilDraft.length === 1 &&
-          pencilDraft[0][0] === point.x &&
-          pencilDraft[0][1] === point.y
+            pencilDraft[0][0] === point.x &&
+            pencilDraft[0][1] === point.y
             ? pencilDraft
             : [...pencilDraft, [point.x, point.y, e.pressure]],
       })
@@ -263,6 +268,7 @@ const Canvas = ({ boardId }: CanvasProps) => {
       Math.abs(current.x - origin.x) + Math.abs(current.y - origin.y) >
       SELECTION_NET_THRESHOLD
     ) {
+      console.log("Attemp")
       setCanvasState({
         mode: CanvasMode.SelectionNet,
         origin,
@@ -344,7 +350,7 @@ const Canvas = ({ boardId }: CanvasProps) => {
   }, [])
 
   const onPointerUp = useMutation(
-    ({}, e) => {
+    ({ }, e) => {
       const point = pointerEventToCanvasPoint(e, camera)
 
       if (

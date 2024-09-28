@@ -9,7 +9,12 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 import { toast } from 'sonner'
 
-const NewBoardButton = ({ orgId, disabled }: any) => {
+interface NewBoardButtonProps {
+  orgId: string;
+  disabled: boolean;
+}
+
+const NewBoardButton = ({ orgId, disabled }: NewBoardButtonProps) => {
   const router = useRouter()
   const { mutate, pending } = useApiMutation(api.board.create)
 
@@ -22,7 +27,7 @@ const NewBoardButton = ({ orgId, disabled }: any) => {
         toast.success('Board created')
         router.push(`/board/${id}`)
       })
-      .catch((err) => toast.error('Failed to create board'))
+      .catch((err) => toast.error(err+'Failed to create board'))
   }
 
   return (

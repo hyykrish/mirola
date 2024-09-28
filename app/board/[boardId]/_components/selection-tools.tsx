@@ -1,4 +1,3 @@
-import { memo } from 'react'
 import { Color, Camera } from '@/types/canvas'
 import { useSelf, useMutation } from '@/liveblocks.config'
 import { useSelectionBounds } from '@/hooks/use-selection-bounds'

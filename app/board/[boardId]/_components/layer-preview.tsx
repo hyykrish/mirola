@@ -1,5 +1,7 @@
 'use client'
+
 import { PointerEvent, memo } from 'react'
+import { colorToCss } from '@/lib/utils'
 import { useStorage } from '@/liveblocks.config'
 import { LayerType } from '@/types/canvas'
 import Rectangle from './rectangle'
@@ -7,12 +9,13 @@ import Ellipse from './ellipse'
 import Text from './text'
 import Note from './note'
 import Path from './path'
-import { colorToCss } from '@/lib/utils'
+
 interface LayerPreviewProps {
   id: string
   onLayerPointerDown: (e: PointerEvent, layerId: string) => void
   selectionColor?: string
 }
+
 const LayerPreview = ({
   id,
   onLayerPointerDown,
@@ -69,7 +72,7 @@ const LayerPreview = ({
           fill={layer.fill ? colorToCss(layer.fill) : '#000'}
           points={layer.points}
           stroke={selectionColor}
-          onPointerDown={(e: any) => onLayerPointerDown(e, id)}
+          onPointerDown={(e) => onLayerPointerDown(e, id)}
         />
       )
     default:
@@ -77,4 +80,5 @@ const LayerPreview = ({
       return null
   }
 }
+
 export default memo(LayerPreview)

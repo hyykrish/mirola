@@ -1,4 +1,3 @@
-import { PointerEvent } from 'react'
 import getStroke from 'perfect-freehand'
 import { getSvgPathFromStroke } from '@/lib/utils'
 
@@ -7,7 +6,7 @@ interface PathProps {
   y: number
   fill: string
   points: number[][]
-  onPointerDown?: (e: any) => void
+  onPointerDown?: (e: React.PointerEvent<SVGPathElement>) => void
   stroke?: string
 }
 
