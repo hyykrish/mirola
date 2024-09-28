@@ -39,7 +39,7 @@ import Participants from "./participants";
 import CursorsPresence from "./cursors-presence";
 import { LiveObject } from "@liveblocks/client";
 import SelectionBox from "./selection-box";
-import SelectionTools from "./selection-tools";
+import { SelectionTools } from "./selection-tools";
 
 interface CanvasProps {
     boardId: string;
