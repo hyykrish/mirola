@@ -7,7 +7,7 @@ import {
     PointerEvent,
     useMemo
 } from "react";
-import { MAX_LAYERS } from "@/constants";
+import { MAX_LAYERS, SELECTION_NET_THRESHOLD } from "@/constants";
 import { nanoid } from "nanoid";
 import LayerPreview from "./layer-preview";
 import {
@@ -21,6 +21,7 @@ import {
     connectionIdToColor,
     pointerEventToCanvasPoint,
     resizeBounds,
+    findIntersectingLayersWithRectangle,
 } from "@/lib/utils";
 import {
     Color,
@@ -156,7 +157,11 @@ export const Canvas = ({
 
         const current = pointerEventToCanvasPoint(e, camera);
 
-        if (canvasState.mode === CanvasMode.Translating) {
+        if (canvasState.mode === CanvasMode.Pressing) {
+            startMultiSelection(current, canvasState.origin);
+        } else if (canvasState.mode === CanvasMode.SelectionNet) {
+            updateSelectionNet(current, canvasState.origin);
+        } else if (canvasState.mode === CanvasMode.Translating) {
             translateSelectedLayer(current)
         } else if (canvasState.mode === CanvasMode.Resizing) {
             resizeSelectedLayer(current);
@@ -167,7 +172,7 @@ export const Canvas = ({
         camera,
         canvasState,
         resizeSelectedLayer,
-        translateSelectedLayer
+        translateSelectedLayer,
     ]);
 
     const onResizeHandlePointerDown = useCallback((corner: Side, initialBounds: XYWH) => {
@@ -262,6 +267,30 @@ export const Canvas = ({
         setCanvasState({ origin: point, mode: CanvasMode.Pressing });
     }, [camera, canvasState]);
 
+    const updateSelectionNet = useMutation((
+        { storage, setMyPresence },
+        current: Point,
+        origin: Point,
+    ) => {
+        const liveLayers = storage.get("layers").toImmutable();
+        setCanvasState({
+            mode: CanvasMode.SelectionNet,
+            origin,
+            current,
+        });
+        const ids = findIntersectingLayersWithRectangle(layerIds, liveLayers, origin, current);
+        setMyPresence({ selection: ids });
+    }, [layerIds]);
+    const startMultiSelection = useCallback((current: Point, origin: Point) => {
+        if (Math.abs(current.x - origin.x) + Math.abs(current.y - origin.y) > SELECTION_NET_THRESHOLD) {
+            setCanvasState({
+                mode: CanvasMode.SelectionNet,
+                origin,
+                current,
+            })
+        }
+    }, []);
+
     return (
         <main
             className="h-full w-full relative bg-neutral-100 touch-none"
@@ -299,6 +328,15 @@ export const Canvas = ({
                 <SelectionBox
                     onResizeHandlePointerDown={onResizeHandlePointerDown}
                 />
+                {canvasState.mode === CanvasMode.SelectionNet && canvasState.current && (
+                    <rect
+                        className="fill-blue-500/5 stroke-blue-500 stroke-1"
+                        x={Math.min(canvasState.origin.x, canvasState.current.x)}
+                        y={Math.min(canvasState.origin.y, canvasState.current.y)}
+                        width={Math.abs(canvasState.origin.x - canvasState.current.x)}
+                        height={Math.abs(canvasState.origin.y - canvasState.current.y)}
+                    />
+                )}
                 <g
                     style={{
                         transform: `translate(${camera.x}px, ${camera.y}px)`
