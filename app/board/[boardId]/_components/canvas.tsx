@@ -28,6 +28,8 @@ import {
     CanvasState,
     LayerType,
     Point,
+    XYWH,
+    Side,
 } from "@/types/canvas";
 
 import Info from "./info";
@@ -105,6 +107,15 @@ export const Canvas = ({
 
         setMyPresence({ cursor: current });
     }, [camera]);
+
+    const onResizeHandlePointerDown = useCallback((corner: Side, initialBounds: XYWH) => {
+        history.pause();
+        setCanvasState({
+            mode: CanvasMode.Resizing,
+            initialBounds,
+            corner,
+        });
+    }, [history]);
 
     const onPointerLeave = useMutation(({ setMyPresence }) => {
         setMyPresence({ cursor: null });
